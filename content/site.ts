@@ -19,6 +19,16 @@ export type Link = { label: string; href: string };
 export type ServiceColor = "sage" | "lavender" | "sky";
 export type ServiceIconName = "cavity" | "rootCanal" | "surgery";
 
+/** Content for a service's own page (/services/<slug>/). */
+export type ServicePage = {
+  intro: string;
+  hero: SiteImage;
+  overview: { title: string[]; text: string[]; image: SiteImage; stat: { value: string; label: string } };
+  treatments: { title: string; text: string }[];
+  steps: { title: string; text: string }[];
+  faqs: { question: string; answer: string }[];
+};
+
 const unsplash = (id: string) => `https://images.unsplash.com/${id}`;
 const kit = (file: string) => `https://ik.imagekit.io/wyvfe8vjna/${file}`;
 
@@ -50,10 +60,10 @@ export const site = {
   },
 
   nav: [
-    { label: "Home", href: "#home" },
-    { label: "About", href: "#about" },
-    { label: "Services", href: "#services" },
-    { label: "Team", href: "#team" },
+    { label: "Home", href: "/#home" },
+    { label: "About", href: "/#about" },
+    { label: "Services", href: "/#services" },
+    { label: "Team", href: "/#team" },
     { label: "Appointments", href: "#book" },
   ] satisfies Link[],
 
@@ -111,34 +121,195 @@ export const site = {
     title: ["Discover", "The Dental Clinic"],
     text: "Here are some of the main procedures that we routinely do, all under one roof on Frankford Avenue.",
     sideLabel: "our services",
+    // Each service has its own page at /services/<slug>/ (app/services/[slug]/page.tsx).
     items: [
       {
+        slug: "preventive-care",
         title: "Preventive Care",
         description: "Exams, cleanings, digital X-rays and gum care that catch small problems before they become big ones.",
         icon: "cavity",
         color: "sage",
-        href: "#book",
+        page: {
+          intro: "Regular exams and professional cleanings keep your smile healthy and catch small problems while they are still quick and easy to fix.",
+          hero: {
+            src: unsplash("photo-1663755489920-5e09f66d011a"),
+            alt: "Dentist in blue gloves examining a smiling patient's teeth",
+            position: "center 40%",
+          },
+          overview: {
+            title: ["Healthy Teeth Start", "With Prevention"],
+            text: [
+              "Most dental problems start small and without pain. A routine visit lets us spot early decay, gum inflammation and worn fillings long before they turn into toothaches, root canals or lost teeth.",
+              "Every check-up at Frankford Avenue Dental Group combines a thorough exam, a gentle professional cleaning and clear advice for your home care, for adults and children alike.",
+            ],
+            image: {
+              src: photos.treatmentRoom,
+              alt: "Modern treatment room with a dental chair and digital X-ray screen",
+              position: "center 45%",
+            },
+            stat: { value: "2x", label: "Check-ups a year recommended for most patients" },
+          },
+          treatments: [
+            { title: "Dental Exams", text: "A careful check of every tooth, your gums, bite and existing fillings, crowns or bridges." },
+            { title: "Professional Cleanings", text: "Removal of plaque and hardened tartar that brushing can't reach, finished with a polish." },
+            { title: "Digital X-rays", text: "Low-radiation images that show decay between teeth and below the gum line, with instant results." },
+            { title: "Gum Care", text: "Early treatment of gingivitis and deep cleanings for gum disease to protect the bone around your teeth." },
+            { title: "Oral Cancer Screening", text: "A quick, painless look at your mouth, tongue and throat as part of every routine exam." },
+            { title: "Fluoride & Sealants", text: "Extra protection for children's and adults' teeth that are prone to cavities." },
+          ],
+          steps: [
+            { title: "Welcome", text: "We review your health history and ask about any concerns or sensitivity you've noticed." },
+            { title: "Exam & X-rays", text: "The dentist examines your teeth and gums, with digital X-rays when they are due." },
+            { title: "Cleaning", text: "Your hygienist removes plaque and tartar, then polishes and flosses every tooth." },
+            { title: "Your Plan", text: "We explain what we found, answer your questions and book your next visit." },
+          ],
+          faqs: [
+            {
+              question: "How often should I have a check-up?",
+              answer: "For most people we recommend an exam and cleaning every six months. If you have gum disease or a higher risk of cavities, we may suggest visits every three to four months.",
+            },
+            {
+              question: "Does a cleaning hurt?",
+              answer: "Routine cleanings are comfortable for most patients. If your teeth or gums are sensitive, let us know and we'll go gently and can numb the area if needed.",
+            },
+            {
+              question: "Are dental X-rays safe?",
+              answer: "Yes. Digital X-rays use a very small amount of radiation, far less than traditional film, and we only take them when they are needed for your care.",
+            },
+            {
+              question: "Do you see children?",
+              answer: "Yes. We care for the whole family, and starting regular check-ups early helps children build good habits and feel at ease at the dentist.",
+            },
+          ],
+        },
       },
       {
+        slug: "root-canals-fillings",
         title: "Root Canals & Fillings",
         description: "Painless, one-visit root canals and tooth-coloured fillings that treat cavities and save your natural teeth.",
         icon: "rootCanal",
         color: "lavender",
-        href: "#book",
+        page: {
+          intro: "Tooth-coloured fillings and painless, one-visit root canals that stop the pain and save your natural teeth.",
+          hero: {
+            src: unsplash("photo-1662543701887-91f8f042a338"),
+            alt: "Patient in the chair while gloved hands hold a dental mirror",
+            position: "center 45%",
+          },
+          overview: {
+            title: ["Save Your Tooth,", "Stop the Pain"],
+            text: [
+              "When decay reaches past the enamel, a filling repairs the tooth before the damage spreads. When it reaches the nerve, a root canal removes the infection and lets you keep your own tooth instead of losing it.",
+              "Using modern equipment and techniques, Dr. Anvar provides painless root canals in a single visit, usually completed in one hour or less.",
+            ],
+            image: {
+              src: unsplash("photo-1749638479393-5f2b74e2a66c"),
+              alt: "Dentist examining a patient",
+              position: "40% center",
+            },
+            stat: { value: "1 hr", label: "Most one-visit root canals take an hour or less" },
+          },
+          treatments: [
+            { title: "Tooth-Coloured Fillings", text: "Composite fillings matched to your natural shade, so repairs blend in with the rest of your smile." },
+            { title: "One-Visit Root Canals", text: "Removal of infected or inflamed nerve tissue, then cleaning and sealing the tooth, in a single appointment." },
+            { title: "Protective Crowns", text: "A custom crown after a root canal or large filling to strengthen the tooth and restore your bite." },
+            { title: "Toothache Relief", text: "Prompt care for pain, swelling or sensitivity. Call us and we'll see you as soon as we can." },
+            { title: "Replacing Old Fillings", text: "Swapping worn, leaking or dark silver fillings for strong, natural-looking composite." },
+            { title: "Chipped & Cracked Teeth", text: "Bonding or crowns to repair damage and keep a cracked tooth from breaking further." },
+          ],
+          steps: [
+            { title: "Diagnosis", text: "An exam and digital X-ray show how deep the decay or infection goes." },
+            { title: "Comfort First", text: "We numb the area fully and check you're comfortable before we begin." },
+            { title: "Treatment", text: "We remove the decay or infected tissue, then clean and seal the tooth." },
+            { title: "Restore", text: "A filling or crown restores the tooth, and we check your bite before you leave." },
+          ],
+          faqs: [
+            {
+              question: "Does a root canal hurt?",
+              answer: "With modern anaesthetic, a root canal feels much like getting a filling. Most patients say the procedure relieves the pain they came in with. Mild tenderness for a few days afterward is normal.",
+            },
+            {
+              question: "How long does a root canal take?",
+              answer: "Most root canals at our office are completed in a single visit of about an hour. Some teeth with several roots or a severe infection may need a second appointment.",
+            },
+            {
+              question: "Will I need a crown after a root canal?",
+              answer: "Back teeth usually need a crown afterward, because a treated tooth can become brittle. We'll tell you what your tooth needs during your visit.",
+            },
+            {
+              question: "I have a toothache right now. What should I do?",
+              answer: "Call us on (215) 333-4744. We keep time for urgent visits and are open until 8pm Monday to Friday. If you have swelling that affects your breathing or swallowing, go to the emergency room.",
+            },
+          ],
+        },
       },
       {
+        slug: "implants-cosmetic",
         title: "Implants & Cosmetic",
         description: "Implants, crowns, bridges, veneers, Clear Correct aligners and professional whitening.",
         icon: "surgery",
         color: "sky",
-        href: "#book",
+        page: {
+          intro: "Replace missing teeth and refresh your smile with implants, crowns, veneers, Clear Correct aligners and professional whitening.",
+          hero: {
+            src: unsplash("photo-1654373535457-383a0a4d00f9"),
+            alt: "Close-up of a bright, healthy smile",
+            position: "center 55%",
+          },
+          overview: {
+            title: ["A Smile You'll", "Love to Share"],
+            text: [
+              "Whether you're replacing a missing tooth or simply want a brighter, straighter smile, we start by listening to what you'd like to change, then explain every option so you can choose what's right for you.",
+              "Dr. Anvar is a premier provider for Clear Correct and veneers, with extensive experience in crown and bridge work and all aspects of cosmetic dentistry.",
+            ],
+            image: {
+              src: photos.reception,
+              alt: "Bright reception desk at Frankford Avenue Dental Group",
+              position: "center 70%",
+            },
+            stat: { value: "Premier", label: "Clear Correct and veneers provider" },
+          },
+          treatments: [
+            { title: "Dental Implants", text: "A permanent replacement for a missing tooth that looks, feels and works like a natural one." },
+            { title: "Crowns", text: "Natural-looking caps that restore broken, worn or weakened teeth to full strength." },
+            { title: "Bridges", text: "Fixed replacement teeth anchored to the teeth on either side of a gap." },
+            { title: "Porcelain Veneers", text: "Thin, custom shells that cover chips, gaps, stains and uneven teeth." },
+            { title: "Clear Correct Aligners", text: "Nearly invisible, removable aligners that straighten teeth without metal braces." },
+            { title: "Professional Whitening", text: "Safe whitening that lifts years of coffee, tea and everyday stains." },
+          ],
+          steps: [
+            { title: "Consultation", text: "Tell us what you'd like to change. We examine your teeth and take the images we need." },
+            { title: "Your Options", text: "We walk you through each treatment, the timeline and the cost before anything begins." },
+            { title: "Treatment", text: "Your treatment is completed with care, over one visit or several depending on the plan." },
+            { title: "Aftercare", text: "We check the result, fine-tune your bite and show you how to keep your new smile bright." },
+          ],
+          faqs: [
+            {
+              question: "Am I a candidate for dental implants?",
+              answer: "Most adults with healthy gums and enough jawbone can have an implant. We'll check your gums and bone with an exam and X-rays during a consultation and explain every option, including bridges.",
+            },
+            {
+              question: "How does Clear Correct compare to braces?",
+              answer: "Clear Correct uses a series of clear, removable aligners instead of brackets and wires. They're nearly invisible, you can take them out to eat and brush, and they suit many mild to moderate cases.",
+            },
+            {
+              question: "Do veneers look natural?",
+              answer: "Yes. Veneers are custom-made to match the shape and shade you choose, so they blend in with your smile and reflect light like natural enamel.",
+            },
+            {
+              question: "How long does professional whitening last?",
+              answer: "Results often last a year or more. How long they last depends on your habits: coffee, tea, red wine and smoking all bring stains back sooner.",
+            },
+          ],
+        },
       },
     ] satisfies {
+      slug: string;
       title: string;
       description: string;
       icon: ServiceIconName;
       color: ServiceColor;
-      href: string;
+      page: ServicePage;
     }[],
     video: {
       image: {
@@ -228,7 +399,7 @@ export const site = {
       {
         name: "Dr. Neelima Pitchika",
         credentials: "DMD, BDS",
-        image: { src: photos.neelima, alt: "Dr. Neelima Pitchika", position: "center 30%" },
+        image: { src: photos.neelima, alt: "Dr. Neelima Pitchika", crop: "faces" },
         bio: [
           "“Building long-lasting relationships is the best part of my job.” Dr. Neelima believes it's not just important to provide painless dentistry, but stress-less dentistry: explaining everything to patients so they know they're in control, and educating them about their procedure so the visit goes as effortlessly as possible.",
           "Dr. Neelima Pitchika earned her D.D.S. from the University of Colorado School of Dental Medicine. She is well trained in restorative, endodontic and surgical dentistry.",
@@ -309,11 +480,11 @@ export const site = {
       {
         label: "Explore",
         links: [
-          { label: "Home", href: "#home" },
-          { label: "About Us", href: "#about" },
-          { label: "Services", href: "#services" },
-          { label: "Patient Stories", href: "#works" },
-          { label: "Meet the Team", href: "#team" },
+          { label: "Home", href: "/#home" },
+          { label: "About Us", href: "/#about" },
+          { label: "Services", href: "/#services" },
+          { label: "Patient Stories", href: "/#works" },
+          { label: "Meet the Team", href: "/#team" },
         ],
       },
       {
@@ -341,3 +512,6 @@ export const site = {
 };
 
 export type Site = typeof site;
+
+/** URL of a service's own page. */
+export const servicePath = (slug: string) => `/services/${slug}/`;

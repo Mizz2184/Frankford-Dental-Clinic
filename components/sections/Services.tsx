@@ -1,5 +1,5 @@
 import { Play, Plus } from "lucide-react";
-import { site, type ServiceColor } from "@/content/site";
+import { servicePath, site, type ServiceColor } from "@/content/site";
 import { ServiceIcon } from "@/components/icons";
 import { Photo } from "@/components/ui/Photo";
 import { PillButton } from "@/components/ui/PillButton";
@@ -14,7 +14,7 @@ const cardColor: Record<ServiceColor, string> = {
 
 type Service = (typeof site.services.items)[number];
 
-function ServiceCard({ service, className = "" }: { service: Service; className?: string }) {
+export function ServiceCard({ service, className = "" }: { service: Service; className?: string }) {
   return (
     <article
       className={`group flex min-h-[280px] flex-col justify-between rounded-card p-8 transition-transform duration-300 ease-out motion-safe:hover:-translate-y-1 md:min-h-[320px] lg:min-h-0 ${cardColor[service.color]} ${className}`}
@@ -33,7 +33,7 @@ function ServiceCard({ service, className = "" }: { service: Service; className?
       <div>
         <h3 className="text-[22px] leading-[1.3] font-medium tracking-[-0.01em]">{service.title}</h3>
         <p className="mt-2 max-w-[400px] lg:line-clamp-2 text-[13px] leading-[1.55] text-body">{service.description}</p>
-        <ReadMore href={service.href} about={service.title} className="mt-5" />
+        <ReadMore href={servicePath(service.slug)} about={service.title} className="mt-5" />
       </div>
     </article>
   );

@@ -11,6 +11,7 @@ export function Hero() {
   return (
     <section
       id="home"
+      data-hero
       aria-labelledby="hero-title"
       className="shell on-dark relative mt-3 h-[620px] overflow-hidden rounded-[20px] bg-ink text-white md:mt-4 md:h-[680px] md:rounded-panel lg:mt-6 lg:h-[760px]"
     >

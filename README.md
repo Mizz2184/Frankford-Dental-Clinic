@@ -18,6 +18,8 @@ All copy, links and images live in [`content/site.ts`](content/site.ts). Compone
   drop them in `public/images/` and set `src: "/images/your-photo.jpg"`. `position` controls the crop focus.
 - **Headlines** are arrays of lines (one `<br />` between them). In the Cost Care title, `{icon}` marks
   where the small rounded photo sits.
+- **Service pages**: each item in `services.items` gets its own page at `/services/<slug>/`, built from its `page`
+  content (intro, hero photo, overview, treatments, visit steps, FAQs). Add an item and it gets a page automatically.
 - **Booking**: every link to `#book` (all "Book Appointment" buttons and the "Appointment" nav link) opens the
   booking flow; a direct visit to `/#book` opens it too. Treatments, opening days, time slots and wording live under
   `booking` in `content/site.ts`. Set `booking.endpoint` to a form service URL (e.g. Formspree) to receive requests;
@@ -26,13 +28,14 @@ All copy, links and images live in [`content/site.ts`](content/site.ts). Compone
 ## Structure
 
 ```
-app/                 layout (font, metadata), page, global tokens (globals.css)
+app/                 layout (font, metadata), home page, services/[slug] service pages, global tokens (globals.css)
 components/
   SiteHeader.tsx     hero nav pill, pinned nav on scroll, mobile full-screen menu
   booking/           BookingDialog: 4-step booking flow (treatment, date & time, details, review)
   ContactForm.tsx    footer contact form (set footer.contact.endpoint to receive messages)
   icons.tsx          tooth glyph + service icons
-  sections/          Hero, About, Services, OurWorks (patient stories), CostCare (our office), Team, Visit (getting here + map), Footer
+  sections/          Hero, About, Services, OurWorks (patient stories), CostCare (our office), Team, Visit (getting here + map), Footer,
+                     ServiceDetail (the service page sections)
   ui/                PillButton, Eyebrow, ReadMore, Photo, BeforeAfter slider, Reveal (motion helpers)
 content/site.ts      everything editable
 ```

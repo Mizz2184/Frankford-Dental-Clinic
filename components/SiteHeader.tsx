@@ -2,11 +2,13 @@
 
 import { AnimatePresence, motion } from "framer-motion";
 import { Menu, Phone, X } from "lucide-react";
+import Link from "next/link";
 import { useEffect, useRef, useState } from "react";
 import { site } from "@/content/site";
 import { PillButton } from "@/components/ui/PillButton";
 
-const sectionIds = site.nav.map((link) => link.href.slice(1));
+// Home-page section ids behind the nav links ("/#about" → "about").
+const sectionIds = site.nav.map((link) => link.href.split("#")[1]);
 
 function NavPill({ active, tone }: { active: string; tone: "glass" | "dark" }) {
   const surface =
@@ -15,7 +17,7 @@ function NavPill({ active, tone }: { active: string; tone: "glass" | "dark" }) {
   return (
     <ul className={`flex items-center rounded-full p-1 ${surface}`}>
       {site.nav.map((link) => {
-        const isActive = link.href === `#${active}`;
+        const isActive = link.href.endsWith(`#${active}`);
         return (
           <li key={link.href}>
             <a
@@ -34,9 +36,10 @@ function NavPill({ active, tone }: { active: string; tone: "glass" | "dark" }) {
   );
 }
 
-export function SiteHeader() {
+/** `current` fixes the highlighted nav item on pages without home sections (e.g. "services"). */
+export function SiteHeader({ current: currentPage }: { current?: string }) {
   const [pinned, setPinned] = useState(false);
-  const [active, setActive] = useState(sectionIds[0]);
+  const [active, setActive] = useState(currentPage ?? sectionIds[0]);
   const [menuOpen, setMenuOpen] = useState(false);
   const opener = useRef<HTMLElement | null>(null);
   const dialog = useRef<HTMLDivElement>(null);
@@ -47,8 +50,9 @@ export function SiteHeader() {
     let frame = 0;
     const update = () => {
       frame = 0;
-      const hero = document.getElementById("home");
+      const hero = document.querySelector("[data-hero]");
       setPinned(hero ? hero.getBoundingClientRect().bottom < 0 : false);
+      if (currentPage) return;
 
       const line = window.innerHeight * 0.35;
       let current = sectionIds[0];
@@ -73,7 +77,7 @@ export function SiteHeader() {
       window.removeEventListener("resize", schedule);
       cancelAnimationFrame(frame);
     };
-  }, []);
+  }, [currentPage]);
 
   // Mobile menu: lock page scroll, move focus in, trap Tab, close on Escape.
   useEffect(() => {
@@ -121,15 +125,15 @@ export function SiteHeader() {
     <>
       <header className="on-dark absolute inset-x-0 top-3 z-30 text-white md:top-4 lg:top-6">
         <div className="shell shell-pad relative flex items-center justify-between pt-6 md:pt-[26px]">
-          <a
-            href="#home"
+          <Link
+            href="/#home"
             aria-label={site.brand.name}
             className="text-[15px] leading-[1.1] font-semibold tracking-[-0.02em] lg:text-base"
           >
             {site.brand.logoLines[0]}
             <br />
             {site.brand.logoLines[1]}
-          </a>
+          </Link>
 
           <nav aria-label="Primary" className="absolute left-1/2 hidden -translate-x-1/2 md:block">
             <NavPill active={active} tone="glass" />
@@ -236,9 +240,9 @@ export function SiteHeader() {
                     <a
                       href={link.href}
                       onClick={() => setMenuOpen(false)}
-                      aria-current={link.href === `#${active}` ? "location" : undefined}
+                      aria-current={link.href.endsWith(`#${active}`) ? "location" : undefined}
                       className={`text-[44px] leading-[1.15] font-medium tracking-[-0.03em] ${
-                        link.href === `#${active}` ? "text-white" : "text-white/55"
+                        link.href.endsWith(`#${active}`) ? "text-white" : "text-white/55"
                       }`}
                     >
                       {link.label}
