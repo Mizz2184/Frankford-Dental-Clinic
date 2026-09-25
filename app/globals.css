@@ -1,0 +1,127 @@
+@import "tailwindcss";
+
+@theme {
+  --color-cream: #f7f4ef;
+  --color-ink: #111111;
+  --color-ink-soft: #2a2a2a;
+  --color-body: #6e6e6e;
+  --color-muted: #a3a3a3;
+  --color-sage: #dce5ce;
+  --color-lavender: #e8d7f8;
+  --color-sky: #cde7fa;
+  --color-beige: #f2e7dc;
+  --color-accent: #e58a3c;
+  --color-star: #f4b400;
+  --color-footer: #0b0b0b;
+  --color-wordmark: #1e1e1e;
+
+  --radius-panel: 28px;
+  --radius-card: 16px;
+  --radius-img: 12px;
+}
+
+@theme inline {
+  --font-sans: var(--font-inter-tight), ui-sans-serif, system-ui, sans-serif;
+}
+
+:root {
+  color-scheme: light;
+}
+
+html {
+  background: var(--color-cream);
+  scroll-behavior: smooth;
+}
+
+body {
+  background: var(--color-cream);
+  color: var(--color-ink);
+  font-family: var(--font-sans);
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+::selection {
+  background: var(--color-ink);
+  color: #fff;
+}
+
+/* Visible focus ring everywhere; flips to white on dark surfaces. */
+:focus-visible {
+  outline: 2px solid var(--color-ink);
+  outline-offset: 2px;
+}
+.on-dark :focus-visible {
+  outline-color: #fff;
+}
+
+@layer components {
+  /* Rounded "panel" frame: 1280px max, 16px (12px mobile) side margin. */
+  .shell {
+    width: min(1280px, calc(100% - 24px));
+    margin-inline: auto;
+  }
+  .shell-pad {
+    padding-inline: 24px;
+  }
+
+  .h1 {
+    font-size: 48px;
+    line-height: 0.95;
+    font-weight: 500;
+    letter-spacing: -0.035em;
+  }
+  .h2 {
+    font-size: 32px;
+    line-height: 1.08;
+    font-weight: 500;
+    letter-spacing: -0.03em;
+  }
+
+  @media (width >= 48rem) {
+    .shell {
+      width: min(1280px, calc(100% - 32px));
+    }
+    .shell-pad {
+      padding-inline: 40px;
+    }
+    .h1 {
+      font-size: 64px;
+    }
+    .h2 {
+      font-size: 36px;
+    }
+  }
+
+  @media (width >= 64rem) {
+    .shell-pad {
+      padding-inline: 64px;
+    }
+    .h1 {
+      font-size: 88px;
+    }
+    .h2 {
+      font-size: 44px;
+    }
+  }
+
+  .no-scrollbar {
+    scrollbar-width: none;
+  }
+  .no-scrollbar::-webkit-scrollbar {
+    display: none;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+}
